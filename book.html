@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Details</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Book Details</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="create.html">Create New Book</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2 id="bookTitle">Loading...</h2>
+      <p id="bookAuthor"></p>
+      <p id="bookYear"></p>
+      <p id="bookPages"></p>
+      <p id="bookGenre"></p>
+      <p id="detailError" class="error"></p>
+    </section>
+
+    <section>
+      <a href="index.html" class="btn">← Back to List</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>Half CRUD Assignment – INFO 6150</p>
+  </footer>
+
+  <script src="api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const id = getQueryParam('id');
+      const errorElement = document.getElementById('detailError');
+
+      if (!id) {
+        errorElement.textContent = 'No book ID provided in the URL.';
+        return;
+      }
+
+      try {
+        const book = await fetchBookById(id);
+
+        document.getElementById('bookTitle').textContent = book.title || 'Untitled';
+        document.getElementById('bookAuthor').textContent = book.author ? `Author: ${book.author}` : '';
+        document.getElementById('bookYear').textContent = book.year ? `Year: ${book.year}` : '';
+        document.getElementById('bookPages').textContent = book.pages ? `Pages: ${book.pages}` : '';
+        document.getElementById('bookGenre').textContent = book.genre ? `Genre: ${book.genre}` : '';
+      } catch (err) {
+        console.error(err);
+        errorElement.textContent = 'Error loading book details from the API.';
+      }
+    });
+  </script>
+</body>
+</html>

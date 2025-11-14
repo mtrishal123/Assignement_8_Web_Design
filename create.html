@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create New Book</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Create a New Book</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="create.html">Create New Book</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Book Information</h2>
+      <form id="createForm" novalidate>
+        <label for="title">Title:</label>
+        <input id="title" name="title" type="text" required />
+        <p id="titleError" class="error"></p>
+
+        <label for="author">Author:</label>
+        <input id="author" name="author" type="text" required />
+        <p id="authorError" class="error"></p>
+
+        <label for="year">Year (e.g. 2020):</label>
+        <input id="year" name="year" type="number" required />
+        <p id="yearError" class="error"></p>
+
+        <label for="pages">Pages:</label>
+        <input id="pages" name="pages" type="number" required />
+        <p id="pagesError" class="error"></p>
+
+        <label for="genre">Genre:</label>
+        <input id="genre" name="genre" type="text" required />
+        <p id="genreError" class="error"></p>
+
+        <button type="submit">Create Book</button>
+        <p id="formError" class="error"></p>
+        <p id="formSuccess" class="success"></p>
+      </form>
+    </section>
+
+    <section>
+      <a href="index.html" class="btn">← Back to List</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>Half CRUD Assignment – INFO 6150</p>
+  </footer>
+
+  <script src="api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('createForm');
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        clearMessages();
+
+        const title = document.getElementById('title').value.trim();
+        const author = document.getElementById('author').value.trim();
+        const yearValue = document.getElementById('year').value.trim();
+        const pagesValue = document.getElementById('pages').value.trim();
+        const genre = document.getElementById('genre').value.trim();
+
+        const formError = document.getElementById('formError');
+        const formSuccess = document.getElementById('formSuccess');
+
+        let valid = true;
+
+        // Simple validation rules
+        if (title.length < 2) {
+          showError('titleError', 'Title must be at least 2 characters.');
+          valid = false;
+        }
+        if (author.length < 2) {
+          showError('authorError', 'Author must be at least 2 characters.');
+          valid = false;
+        }
+
+        const yearNum = parseInt(yearValue, 10);
+        const currentYear = new Date().getFullYear();
+        if (isNaN(yearNum) || yearNum < 1500 || yearNum > currentYear) {
+          showError('yearError', `Year must be between 1500 and ${currentYear}.`);
+          valid = false;
+        }
+
+        const pagesNum = parseInt(pagesValue, 10);
+        if (isNaN(pagesNum) || pagesNum <= 0) {
+          showError('pagesError', 'Pages must be a positive number.');
+          valid = false;
+        }
+
+        if (genre.length < 3) {
+          showError('genreError', 'Genre must be at least 3 characters.');
+          valid = false;
+        }
+
+        if (!valid) {
+          formError.textContent = 'Please fix the errors above and try again.';
+          return;
+        }
+
+        try {
+          await createBook({
+            title,
+            author,
+            year: yearNum,
+            pages: pagesNum,
+            genre,
+          });
+          formSuccess.textContent = 'Book created successfully! Go back to the homepage to see it in the list.';
+          form.reset();
+        } catch (err) {
+          console.error(err);
+          formError.textContent = 'There was an error creating the book. Please try again.';
+        }
+      });
+
+      function showError(id, message) {
+        document.getElementById(id).textContent = message;
+      }
+
+      function clearMessages() {
+        document.querySelectorAll('.error').forEach(el => el.textContent = '');
+        document.querySelectorAll('.success').forEach(el => el.textContent = '');
+      }
+    });
+  </script>
+</body>
+</html>
