@@ -32,37 +32,6 @@
   </footer>
 
   <script src="api.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const listElement = document.getElementById('bookList');
-      const errorElement = document.getElementById('listError');
-
-      try {
-        const books = await fetchBooks();
-        if (!Array.isArray(books) || books.length === 0) {
-          listElement.innerHTML = '<li>No books found.</li>';
-          return;
-        }
-
-        books.forEach(book => {
-          const li = document.createElement('li');
-
-          const link = document.createElement('a');
-          link.href = `book.html?id=${encodeURIComponent(book.id)}`;
-          link.textContent = book.title || 'Untitled';
-
-          const meta = document.createElement('span');
-          meta.textContent = book.author ? `by ${book.author}` : '';
-
-          li.appendChild(link);
-          li.appendChild(meta);
-          listElement.appendChild(li);
-        });
-      } catch (err) {
-        console.error(err);
-        errorElement.textContent = 'Error loading books from the API.';
-      }
-    });
-  </script>
+  <script src="index.js"></script>
 </body>
 </html>

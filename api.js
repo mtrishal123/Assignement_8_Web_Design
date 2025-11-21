@@ -1,7 +1,4 @@
-
 const API_BASE_URL = 'https://691792d121a96359486d5b83.mockapi.io/Books'; 
-
-
 
 async function fetchBooks() {
   const response = await fetch(API_BASE_URL);
@@ -11,7 +8,6 @@ async function fetchBooks() {
   return response.json();
 }
 
-
 async function fetchBookById(id) {
   const response = await fetch(`${API_BASE_URL}/${id}`);
   if (!response.ok) {
@@ -19,7 +15,6 @@ async function fetchBookById(id) {
   }
   return response.json();
 }
-
 
 async function createBook(bookData) {
   const response = await fetch(API_BASE_URL, {
@@ -33,8 +28,27 @@ async function createBook(bookData) {
   return response.json();
 }
 
-
 function getQueryParam(name) {
   const params = new URLSearchParams(window.location.search);
   return params.get(name);
+}
+
+async function updateBook(id, bookData) {
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(bookData),
+  });
+  if (!response.ok) {
+    throw new Error('Failed to update book');
+  }
+  return response.json();
+}
+
+async function deleteBook(id) {
+  const response = await fetch(`${API_BASE_URL}/${id}`, { method: 'DELETE' });
+  if (!response.ok) {
+    throw new Error('Failed to delete book');
+  }
+  return response.json();
 }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Book</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Edit Book</h1>
+    <nav>
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <form id="editForm" novalidate>
+        <label for="title">Title:</label>
+        <input id="title" name="title" type="text" required />
+        <p id="titleError" class="error"></p>
+
+        <label for="author">Author:</label>
+        <input id="author" name="author" type="text" required />
+        <p id="authorError" class="error"></p>
+
+        <label for="year">Year:</label>
+        <input id="year" name="year" type="number" required />
+        <p id="yearError" class="error"></p>
+
+        <label for="pages">Pages:</label>
+        <input id="pages" name="pages" type="number" required />
+        <p id="pagesError" class="error"></p>
+
+        <label for="genre">Genre:</label>
+        <input id="genre" name="genre" type="text" required />
+        <p id="genreError" class="error"></p>
+
+        <button type="submit">Update Book</button>
+        <p id="formError" class="error"></p>
+        <p id="formSuccess" class="success"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>Full CRUD Assignment – INFO 6150</p>
+  </footer>
+
+  <script src="api.js"></script>
+  <script src="edit.js"></script>
+</body>
+</html>
